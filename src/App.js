@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useMemo, useState } from "react";
 
 function App() {
+  // Logica sem memo
+  const [countWithoutMemo, setCountWithoutMemo] = useState(0);
+
+  const simpleFunction = () => {
+    console.log("entrou na função simples");
+    return countWithoutMemo ** 2;
+  };
+
+  // Logica com memo
+  const [countWithMemo, setCountWithMemo] = useState(0);
+
+  const expensiveFunction = useMemo(() => {
+    console.log("entrou na função barata");
+    return countWithMemo ** 36;
+  }, [countWithMemo]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Funcão cara:{expensiveFunction}</h1>
+      <h1>Funcão barata:{simpleFunction()}</h1>
+
+      <button
+        onClick={() => {
+          setCountWithMemo(countWithMemo + 1);
+        }}
+      >
+        Alteração com memo {countWithMemo}
+      </button>
+      <button
+        onClick={() => {
+          setCountWithoutMemo(countWithoutMemo + 1);
+        }}
+      >
+        Alteração sem memo {countWithoutMemo}
+      </button>
     </div>
   );
 }
